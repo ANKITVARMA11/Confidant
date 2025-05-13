@@ -33,7 +33,7 @@ def query():
     print("Step 2: concatenating content")
     content = task.content_scrape(fetched_results)
 
-    # Step 3: Generate an answer using the LLM
+    # Step 3: Generating an answer using the LLM
     print("Step 3: generating answer")
     answer = task.generate_answer(content, query)
 

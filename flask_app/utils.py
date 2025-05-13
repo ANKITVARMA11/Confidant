@@ -52,24 +52,6 @@ def content_scrape(fetched_results):
         
     return content.strip()
 
-
-# def generate_answer(content, query):
-#     """
-#     Generates an answer from the concatenated content using GPT-4.
-#     The content and the user's query are used to generate a contextual answer.
-#     """
-#     prompt = query + content
-#     # Creating the prompt based on the content and the query
-#     response = api_response.reply(prompt)
-    
-#     # implement openai call logic and get back the response
-#     return response
-
-
-
-# main file
-
-
 qa_chain = None  # Global so memory persists between calls
 
 def generate_answer(content, query):
