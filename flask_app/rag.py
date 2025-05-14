@@ -21,16 +21,16 @@ def setup_langchain(content):
     print(f"✅ Loaded API key: {openai_api_key[:8]}...")
 
     # 2. Splitting content into chunks
-    splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=50)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=10000, chunk_overlap=1000)
     docs = splitter.create_documents([content])
 
     # 3. Creating embeddings
     try:
-        embeddings = OpenAIEmbeddings(model="gpt-3.5-turbo", openai_api_key=openai_api_key)
+        embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         vectorstore = FAISS.from_documents(docs, embeddings)
-    except RateLimitError:
-        print("⚠️ Embedding rate limit hit or quota exhausted.")
-        return "Quota exceeded. Please wait and try again."
+    # except RateLimitError:
+    #     print("⚠️ Embedding rate limit hit or quota exhausted.")
+    #     return "Quota exceeded. Please wait and try again."
     except AuthenticationError:
         print("❌ Authentication failed. Invalid API key.")
         return "Authentication failed. Please check your API key."

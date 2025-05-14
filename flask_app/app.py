@@ -24,17 +24,17 @@ def query():
     data = request.get_json()
     query = data["query"]
     
-    # Step 1: Search and scrape articles based on the query
+    # Step 1: Searching articles based on the query
     print("Step 1: searching articles")
     task = flask_app.utils
     fetched_results = task.search_articles(query)
     
-    # Step 2: Concatenate content from the scraped articles
-    print("Step 2: concatenating content")
+    # Step 2: Scraping and Processing content from the searched articles
+    print("Step 2: Processing content")
     content = task.content_scrape(fetched_results)
 
     # Step 3: Generating an answer using the LLM
-    print("Step 3: generating answer")
+    print("Step 3: Generating answer")
     answer = task.generate_answer(content, query)
 
     # return the jsonified text back to streamlit

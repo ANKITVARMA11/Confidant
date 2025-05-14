@@ -31,26 +31,37 @@ def search_articles(query):
     
     return fetched_results # returns a list like [[page title, URL],[page title, URL]....]
 
+import requests
+from bs4 import BeautifulSoup as bf
+
 def content_scrape(fetched_results):
     """Takes a list of search results page title and their URLs and scraps the headings and paragraphs out of them"""
-    content = "" # The final string that will be given to LLM
+    content = ""  # The final string that will be given to LLM
 
     for result in fetched_results:
         url = result[1]
-        response = requests.get(url,timeout = 10)
-        soup = bf(response.text,"html.parser")
-        elements = soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6','p'])
-        
-        for tag in elements:
-            text = tag.get_text(strip=True)
-            if not text:
-                continue  # skipping empty text
-            if tag.name.startswith('h'):
-                content += f"\n\n### {text}\n"
-            elif tag.name == 'p':
-                content += f"{text}\n"
-        
+        try:
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()  # Raise HTTPError for bad status codes
+
+            soup = bf(response.text, "html.parser")
+            elements = soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'])
+
+            for tag in elements:
+                text = tag.get_text(strip=True)
+                if not text:
+                    continue  # skipping empty text
+                if tag.name.startswith('h'):
+                    content += f"\n\n### {text}\n"
+                elif tag.name == 'p':
+                    content += f"{text}\n"
+
+        except requests.exceptions.RequestException as e:
+            print(f"[ERROR] Skipping URL due to fetch error: {url}\nReason: {e}")
+            continue  # Skip to next URL
+
     return content.strip()
+
 
 qa_chain = None  # Global so memory persists between calls
 
