@@ -28,9 +28,9 @@ def setup_langchain(content):
     try:
         embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         vectorstore = FAISS.from_documents(docs, embeddings)
-    # except RateLimitError:
-    #     print("⚠️ Embedding rate limit hit or quota exhausted.")
-    #     return "Quota exceeded. Please wait and try again."
+    except RateLimitError:
+        print("⚠️ Embedding rate limit hit or quota exhausted.")
+        return "Quota exceeded. Please wait and try again."
     except AuthenticationError:
         print("❌ Authentication failed. Invalid API key.")
         return "Authentication failed. Please check your API key."
