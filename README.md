@@ -1,5 +1,3 @@
-# Confidant
-
 # LLM-Based Web Search Assistant (RAG Pipeline with LangChain)
 
 This project is an end-to-end system that retrieves live web content, processes it, and generates intelligent responses using a Large Language Model (LLM). It employs a Retrieval-Augmented Generation (RAG) approach to answer user queries based on real-time internet data.
